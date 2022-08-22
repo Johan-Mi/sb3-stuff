@@ -100,12 +100,5 @@ fn try_str_to_num(s: &str) -> Option<f64> {
 }
 
 fn number_to_string(num: f64) -> String {
-    // FIXME: Rust does not format floats the same way as JavaScript.
-    if num == f64::INFINITY {
-        "Infinity".to_owned()
-    } else if num == f64::NEG_INFINITY {
-        "-Infinity".to_owned()
-    } else {
-        num.to_string()
-    }
+    ryu_js::Buffer::new().format(num).to_owned()
 }

@@ -12,3 +12,4 @@ categories = []
 
 [dependencies]
 smol_str = { version = "0.1", default_features = false }
+ryu-js = "0.2.2"
