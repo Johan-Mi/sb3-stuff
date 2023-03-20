@@ -10,48 +10,54 @@ pub enum Value {
 }
 
 impl Value {
+    #[must_use]
     pub fn to_bool(&self) -> bool {
         match self {
-            Value::Num(num) => *num != 0.0 && !num.is_nan(),
-            Value::String(s) => {
+            Self::Num(num) => *num != 0.0 && !num.is_nan(),
+            Self::String(s) => {
                 !s.is_empty() && s != "0" && !s.eq_ignore_ascii_case("false")
             }
-            Value::Bool(b) => *b,
+            Self::Bool(b) => *b,
         }
     }
 
+    #[must_use]
     pub fn try_to_num(&self) -> Option<f64> {
         match self {
-            Value::Num(num) if num.is_nan() => None,
-            Value::Num(num) => Some(*num),
-            Value::String(s) => try_str_to_num(s),
-            Value::Bool(b) => Some(if *b { 1.0 } else { 0.0 }),
+            Self::Num(num) if num.is_nan() => None,
+            Self::Num(num) => Some(*num),
+            Self::String(s) => try_str_to_num(s),
+            Self::Bool(b) => Some(if *b { 1.0 } else { 0.0 }),
         }
     }
 
+    #[must_use]
     pub fn to_num(&self) -> f64 {
         self.try_to_num().unwrap_or(0.0)
     }
 
+    #[must_use]
     pub fn to_cow_str(&self) -> Cow<str> {
         match self {
-            Value::Num(num) => Cow::Owned(number_to_string(*num)),
-            Value::String(s) => Cow::Borrowed(s),
-            Value::Bool(true) => Cow::Borrowed("true"),
-            Value::Bool(false) => Cow::Borrowed("false"),
+            Self::Num(num) => Cow::Owned(number_to_string(*num)),
+            Self::String(s) => Cow::Borrowed(s),
+            Self::Bool(true) => Cow::Borrowed("true"),
+            Self::Bool(false) => Cow::Borrowed("false"),
         }
     }
 
+    #[must_use]
     pub fn to_index(&self) -> Option<Index> {
         // TODO: Handle "all", "random" and "any"
         match self {
-            Value::String(s) if s == "last" => Some(Index::Last),
+            Self::String(s) if s == "last" => Some(Index::Last),
             _ => self
                 .try_to_num()
                 .and_then(|n| (n as usize).checked_sub(1).map(Index::Nth)),
         }
     }
 
+    #[must_use]
     pub fn compare(&self, other: &Self) -> cmp::Ordering {
         if let (Some(lhsn), Some(rhsn)) =
             (self.try_to_num(), other.try_to_num())
@@ -77,9 +83,9 @@ impl Default for Value {
 impl fmt::Debug for Value {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            Value::Num(num) => fmt::Debug::fmt(num, f),
-            Value::String(s) => fmt::Debug::fmt(s, f),
-            Value::Bool(b) => fmt::Debug::fmt(b, f),
+            Self::Num(num) => fmt::Debug::fmt(num, f),
+            Self::String(s) => fmt::Debug::fmt(s, f),
+            Self::Bool(b) => fmt::Debug::fmt(b, f),
         }
     }
 }
