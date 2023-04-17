@@ -6,7 +6,7 @@ description = "Utilities for working with `.sb3` files"
 license = "Unlicense"
 repository = "https://github.com/Johan-Mi/sb3-stuff"
 keywords = []
-categories = []
+categories = ["no-std"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
