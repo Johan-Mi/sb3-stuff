@@ -1,6 +1,10 @@
 use crate::Index;
+use alloc::{
+    borrow::{Cow, ToOwned},
+    string::String,
+};
+use core::{cmp, fmt};
 use smol_str::SmolStr;
-use std::{borrow::Cow, cmp, fmt};
 
 #[derive(Clone)]
 pub enum Value {
