@@ -66,9 +66,9 @@ impl Value {
         if let (Some(lhsn), Some(rhsn)) =
             (self.try_to_num(), other.try_to_num())
         {
-            lhsn.partial_cmp(&rhsn).unwrap_or_else(|| {
-                panic!("could not compare {lhsn} with {rhsn}")
-            })
+            // Comparing floats only fails when NaN is involved, which
+            // `try_to_num()` filters out.
+            lhsn.partial_cmp(&rhsn).unwrap()
         } else {
             // TODO: Do this without allocating new strings
             self.to_cow_str()
