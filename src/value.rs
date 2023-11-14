@@ -4,12 +4,12 @@ use alloc::{
     string::String,
 };
 use core::{cmp, fmt};
-use smol_str::SmolStr;
+use ecow::EcoString;
 
 #[derive(Clone)]
 pub enum Value {
     Num(f64),
-    String(SmolStr),
+    String(EcoString),
     Bool(bool),
 }
 
@@ -80,7 +80,7 @@ impl Value {
 
 impl Default for Value {
     fn default() -> Self {
-        Self::String(SmolStr::default())
+        Self::String(EcoString::default())
     }
 }
 
